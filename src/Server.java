@@ -7,6 +7,16 @@ public class Server {
 	static final int portDefault = 1111;
 	ServerSocket socketsrv = null;
 	
+	
+	// Enum des messages associés aux codes de retour dans le protocole HTTP
+	public enum  HttpErrors {
+		Error404 {
+			public String toString() {
+				return "404 - File Not Found";
+			}
+		}
+	}
+		
 	// Constructeur par défaut (port par défaut défini pour le serveur)
 	Server() {
 		try {

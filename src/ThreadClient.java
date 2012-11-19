@@ -17,6 +17,7 @@ public class ThreadClient  extends Thread {
 	StringTokenizer st;
 	String line, token;
 	Hashtable<String, String> data;
+	
 	/*
 	 *  Constructeur premenant en paramètre une socket cliente
 	 *  Définition des flux input/output en fonction de la socket cliente
@@ -34,10 +35,9 @@ public class ThreadClient  extends Thread {
 	}
 
 	// Surcharge de la méthode run : Redéfinition du flux de sortie pour la socket client
-	public void run() {
-		httpdServerV3();
-		
+	public void run() {		
 		try {
+			httpdServerV5();
 			socket.close();
 		}
 		catch (Exception e) {
@@ -116,15 +116,70 @@ public class ThreadClient  extends Thread {
 					out.println("HTTP/1.0 404");
 					out.println("Content-Type: text/PLAIN");
 					out.println("");
-					out.println("File Not Found");
+					out.println(Server.HttpErrors.Error404);
 					out.println("");
 				}	
 			}
 			catch (Exception e) {
-				e.printStackTrace();
-				System.out.println("serreur : " + e.getMessage());
+				System.out.println("erreur : " + e.getMessage());
 			}
 		}
+	}
+
+	/*
+	 * PART 4 : Affiche les requêtes http des clients
+	 */
+	public void httpdServerV4() {
+		while (!(line = in.nextLine()).equals(""))
+			out.println(line);
+	}
+
+	/*
+	 * Check du champs "User-Agent" du navigateur client et affiche firefox.html si le navigateur est Firefox, ie.html si IE
+	 * sinon on affiche index.hmtl
+	 */
+	public void httpdServerV5() {
+		File f = null;
+		
+		while (!(line = in.nextLine()).equals("")) {
+			if (line.contains("User-Agent:"))
+				data.put("User-Agent", line);
+		}
+			
+		try {			
+			if (data.containsKey("User-Agent")) {
+				if (data.get("User-Agent").contains("Firefox"))
+					f = new File("firefox.html");
+				else if (data.get("User-Agent").contains("MSIE"))
+					f = new File("ie.html");
+			}
+			if (f == null)
+				f = new File("index.html");
+			
+			if (f.exists()) {
+				FileReader file = new FileReader(f);
+				reader = new BufferedReader(file);
+
+				out.println("HTTP/1.0 200 OK");
+				out.println("Content-Type: text/HTML");
+				out.println("");
+				while ((line = reader.readLine()) != null && !line.isEmpty())
+					out.println(line);
+				out.println("");
+
+				file.close();
+			}
+			else {
+				out.println("HTTP/1.0 404");
+				out.println("Content-Type: text/PLAIN");
+				out.println("");
+				out.println(Server.HttpErrors.Error404);
+				out.println("");
+			}	
+		}
+		catch (Exception e) {
+			System.out.println("erreur : " + e.getMessage());
+		}			
 	}
 	
 }
