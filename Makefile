@@ -1,5 +1,5 @@
 CC=javac
-FILES= ./src/HTTP.java ./src/Server.java ./src/ThreadClient.java
+FILES= ./src/MyHTTPServer.java ./src/TCPServer.java ./src/ThreadClient.java
 DIR=HTTPServer
 DIST= puydoyeux_vincent-HTTPServer
 
