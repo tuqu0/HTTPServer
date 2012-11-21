@@ -163,8 +163,8 @@ public class ThreadClient  extends Thread {
 	}
 
 	/*
-	 * Check du champs "User-Agent" du navigateur client et affiche firefox.html si le navigateur est Firefox, ie.html si IE
-	 * sinon on affiche index.hmtl
+	 * PART 5 : Check du champs "User-Agent" du navigateur client et affiche firefox.html si 
+	 * le navigateur est Firefox, ie.html si IE sinon on affiche index.hmtl
 	 */
 	public void httpdServerV5() {
 		File file = null;
