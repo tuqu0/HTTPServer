@@ -11,7 +11,7 @@
 
 1. [Hiérarchie]
 src ->	fichiers sources .java
-bin ->	fichiers compilés .class + pages html (index.html, ie.html, 		firefox.hmtl)
+bin ->	fichiers compilés .class + pages html (index.html, ie.html, firefox.html, page.html)
 
 2. [Compilation]
 Dans un terminal à la racine du projet exécuter dans un shell
@@ -27,12 +27,14 @@ $ cd bin/ && java MyHTTPServer
 4. [Options]
 Le projet comporte plusieurs options :
 	- Mode du serveur
-		Les différents modes répondent aux étapes 			fonctionnelles du sujet du projet.
+		Les différents modes répondent aux étapes fonctionnelles du sujet du projet.
 	- Port du serveur
-		Permet de définir le port TCP sur lequel écoutera le 			serveur.
+		Permet de définir le port TCP sur lequel écoutera le serveur.
 
 5. [Spécificités]
-	- Si un mode invalide est saisi (les modes valides vont de 1 		  à 5), c'est le mode 3 qui est activé par défaut.
-	- Si un port invalide qui ne peut être parsé en entier est 		  saisi, c'est le port TCP 1111 qui est choisi par défaut.
-	- Si le port 0 est saisi, c'est le système qui choisira un 		  port TCP aléatoire.
+	- Les modes 3 et 4 intègrent la gestion de l'erreur 404 : si le fichier demandé n'existe pas, on tente d'afficher le fichier index.html. Si ce dernier n'existe pas, une erreur HTTP 404 est retournée au client.
+	- Le mode 2 qui affiche le contenu du fichier index.html, vérifie si le fichier existe mais ne retourne pas d'erreur
+	- Si un mode invalide est saisi (les modes valides vont de 1 à 5), c'est le mode 3 qui est activé par défaut.
+	- Si un port invalide qui ne peut être parsé en entier est saisi, c'est le port TCP 1111 qui est choisi par défaut.
+	- Si le port 0 est saisi, c'est le système qui choisira un port TCP aléatoire.
 	
