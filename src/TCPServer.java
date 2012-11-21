@@ -1,13 +1,10 @@
-import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class TCPServer {
-	private static final int portDefault = 1111;
-	public static int mode;
+	private int port;
+	private int serverMode;
 	private ServerSocket socketServer = null;
-	private Socket socketClient;
-	
 	
 	// Enum des messages associés aux codes de retour dans le protocole HTTP
 	public enum  HttpErrors {
@@ -18,37 +15,48 @@ public class TCPServer {
 		}
 	}
 		
-	// Constructeur par défaut (port par défaut défini pour le serveur)
-	TCPServer(int mode) {
-		try {
-			TCPServer.mode = mode;
-			socketServer = new ServerSocket(portDefault);
-		} catch (IOException e) {
-			System.out.println("erreur: impossible de se connecter sur le port " + portDefault);
-		}
+	// Constructeur par défaut (définition d'un port et mode par défaut)
+	TCPServer() {
+		port = 1111;
+		serverMode = 3;
 	}
 	
-	// Constructeur permettant de définir le numéro de port d'écoute du serveur
-	TCPServer(int port, int mode) {
-		try {
-			TCPServer.mode = mode;
-			socketServer = new ServerSocket(port);
-		} catch (IOException e) {
-			System.out.println("erreur: impossible de se connecter sur le port " + port);
-		}
-
+	// Getter for port
+	public int getPort() {
+		return port;
+	}
+	
+	// Setter for port
+	public void setPort(int p) {
+		port = p;
+	}
+	
+	// Getter for mode
+	public int getServerMode() {
+		return serverMode;
+	}
+	
+	// Setter for mode
+	public void setServerMode(int m) {
+		if (m > 0 && m < 6)
+			serverMode = m;
 	}
 	
 	// Lancement du serveur - Acceptation de clients et lancements d'un nouveau thread pour chaque client
 	public void start() {
-	
-		while (true){			
-			try {
+		Socket socketClient;
+
+		try {
+			socketServer = new ServerSocket(port);
+			System.out.println("\nLancement du serveur HTTP sur le port " + socketServer.getLocalPort() + " en mode " + serverMode);
+			
+			while (true){			
 				socketClient = socketServer.accept();
-				new ThreadClient(socketClient);
-			} catch (IOException e) {
-				System.out.println("erreur: impossible de lancer un nouveau thread client");
+				new ThreadClient(socketClient, serverMode);
 			}
+		}
+		catch (Exception e) {
+			System.out.println("erreur : " + e.getMessage());
 		}
 	}
 }

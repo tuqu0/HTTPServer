@@ -10,7 +10,7 @@ clean:
 	rm -f ./bin/*.class	
 dist: clean
 	rm -rf ../$(DIST) 2>/dev/null
-	rm -rf ../$(DIST).tar.gz 2>/dev/null
+	rm -rf ../$(DIST).zip 2>/dev/null
 	mkdir ../$(DIST)
 	cp -r ../$(DIR)/*  ../$(DIST)
 	zip -9 -r ../$(DIST).zip ../$(DIST) 

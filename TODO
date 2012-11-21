@@ -1,0 +1,12 @@
+TODO List
++ Lancement du serveur avec un port et mode par défaut
++ Paramétrable du port et mode du serveur
++ Gestion multi-clients (threads)
++ Afficher du HTML brut non interprété
++ Afficher le contenu du fichier index.html
++ Afficher du HTML interprété de la page demandée
++ Gestion erreur HTTP 404 - File Not Found
++ Afficher la requête HTTP du navigateur client
++ Afficher des pages différentes selon le navigateur (Firefox / IE /   	 Autres)
+
+

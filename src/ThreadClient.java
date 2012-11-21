@@ -13,15 +13,17 @@ public class ThreadClient  extends Thread {
 	Socket socket;
 	PrintStream out;
 	Scanner in;
+	int serverMode;
 	Hashtable<String, String> data;
 	
 	/*
 	 *  Constructeur premenant en paramètre une socket cliente
 	 *  Définition des flux input/output en fonction de la socket cliente
 	 */
-	public ThreadClient(Socket s) {
+	public ThreadClient(Socket s, int serverMode) {
 		try {
 			socket = s;
+			this.serverMode = serverMode;
 			out = new PrintStream(socket.getOutputStream());
 			in = new Scanner(new BufferedReader(new InputStreamReader(socket.getInputStream())));
 			data = new Hashtable<String, String>();
@@ -34,7 +36,7 @@ public class ThreadClient  extends Thread {
 	// Surcharge de la méthode run : Redéfinition du flux de sortie pour la socket client
 	public void run() {
 		try {
-			switch (TCPServer.mode) {
+			switch (serverMode) {
 			case 1:
 				httpdServerV1();
 				break;
@@ -54,7 +56,6 @@ public class ThreadClient  extends Thread {
 				httpdServerV3();
 				break;
 			}
-			
 			socket.close();
 		}
 		catch (Exception e) {
@@ -86,7 +87,6 @@ public class ThreadClient  extends Thread {
 
 				while ((line = bufReader.readLine()) != null)
 					out.println(line);
-				
 				fileReader.close();
 			}
 		} catch (IOException e) {
@@ -198,7 +198,6 @@ public class ThreadClient  extends Thread {
 				while ((line = bufReader.readLine()) != null && !line.isEmpty())
 					out.println(line);
 				out.println("");
-
 				fileReader.close();
 			}
 			else {
@@ -213,5 +212,4 @@ public class ThreadClient  extends Thread {
 			System.out.println("erreur : " + e.getMessage());
 		}			
 	}
-	
 }
