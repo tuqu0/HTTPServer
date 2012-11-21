@@ -82,7 +82,7 @@ public class ThreadClient  extends Thread {
 			file = new File("index.html");
 
 			if (file.exists()) {
-				fileReader = new FileReader("index.html");
+				fileReader = new FileReader(file);
 				bufReader = new BufferedReader(fileReader);
 
 				while ((line = bufReader.readLine()) != null)
