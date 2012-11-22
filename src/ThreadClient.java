@@ -15,9 +15,9 @@ public class ThreadClient  extends Thread {
 	Scanner in;
 	int serverMode;
 	Hashtable<String, String> data;
-	
+
 	/*
-	 *  Constructeur premenant en paramètre une socket cliente
+	 *  Constructeur premenant en paramètre une socket cliente et le mode du serveur.
 	 *  Définition des flux input/output en fonction de la socket cliente
 	 */
 	public ThreadClient(Socket s, int serverMode) {
@@ -33,28 +33,28 @@ public class ThreadClient  extends Thread {
 		this.start();
 	}
 
-	// Surcharge de la méthode run : Redéfinition du flux de sortie pour la socket client
+	// Surcharge de la méthode run : Appel à la méthode associée au mode du serveur choisi 
 	public void run() {
 		try {
 			switch (serverMode) {
-			case 1:
-				httpdServerV1();
-				break;
-			case 2:
-				httpdServerV2();
-				break;
-			case 3:
-				httpdServerV3();
-				break;
-			case 4:
-				httpdServerV4();
-				break;
-			case 5:
-				httpdServerV5();
-				break;
-			default:
-				httpdServerV3();
-				break;
+				case 1:
+					httpdServerV1();
+					break;
+				case 2:
+					httpdServerV2();
+					break;
+				case 3:
+					httpdServerV3();
+					break;
+				case 4:
+					httpdServerV4();
+					break;
+				case 5:
+					httpdServerV5();
+					break;
+				default:
+					httpdServerV3();
+					break;
 			}
 			socket.close();
 		}
@@ -63,21 +63,21 @@ public class ThreadClient  extends Thread {
 		}
 	}
 
-	// PART1 : Affiche du contenu HTML brut
+	// PART 1 : Affiche du contenu HTML brut
 	public void httpdServerV1() {
 		out.println("<HTML>Exemple of HTML file with <BLINK>blinking content</BLINK></HTML>");
 	}
 
 	/*
 	 * PART 2 : Affiche le contenu HTML brut du fichier index.html
-	 * situé dans le répertoire courante du serveur
+	 * situé dans le répertoire courant du serveur
 	 */
 	public void httpdServerV2() {
 		File file;
 		FileReader fileReader;
 		BufferedReader bufReader;
 		String line;
-		
+
 		try {
 			file = new File("index.html");
 
@@ -105,10 +105,10 @@ public class ThreadClient  extends Thread {
 		BufferedReader bufReader;
 		StringTokenizer st;
 		String line, token;
-		
+
 		while (!(line = in.nextLine()).equals("")) {
 			st = new StringTokenizer(line);		
-			
+
 			while (st.hasMoreTokens()) {
 				token = st.nextToken();
 
@@ -125,7 +125,7 @@ public class ThreadClient  extends Thread {
 
 				if (!file.exists())
 					file = new File("index.html");
-				
+
 				if (file.exists()) {	
 					fileReader = new FileReader(file);
 					bufReader = new BufferedReader(fileReader);
@@ -157,26 +157,26 @@ public class ThreadClient  extends Thread {
 	 */
 	public void httpdServerV4() {
 		String line;
-		
+
 		while (!(line = in.nextLine()).equals(""))
 			out.println(line);
 	}
 
 	/*
 	 * PART 5 : Check du champs "User-Agent" du navigateur client et affiche firefox.html si 
-	 * le navigateur est Firefox, ie.html si IE sinon on affiche index.hmtl
+	 * le navigateur est Firefox, ie.html si IEi, sinon on affiche index.hmtl ou une erreur 404
 	 */
 	public void httpdServerV5() {
 		File file = null;
 		FileReader fileReader;
 		BufferedReader bufReader;
 		String line;
-		
+
 		while (!(line = in.nextLine()).equals("")) {
 			if (line.contains("User-Agent:"))
 				data.put("User-Agent", line);
 		}
-			
+
 		try {			
 			if (data.containsKey("User-Agent")) {
 				if (data.get("User-Agent").contains("Firefox"))
@@ -184,10 +184,10 @@ public class ThreadClient  extends Thread {
 				else if (data.get("User-Agent").contains("MSIE"))
 					file = new File("ie.html");
 			}
-			
+
 			if (file == null)
 				file = new File("index.html");
-			
+
 			if (file.exists()) {
 				fileReader = new FileReader(file);
 				bufReader = new BufferedReader(fileReader);
